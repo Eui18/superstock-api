@@ -19,4 +19,11 @@ CREATE TABLE IF NOT EXISTS products (
   FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL
+);
+
 INSERT IGNORE INTO categories (name) VALUES ('Lácteos'), ('Abarrotes'), ('Limpieza'), ('Frutas');

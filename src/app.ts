@@ -1,19 +1,22 @@
 import express from "express";
 import cors from "cors";
-import { createContainer } from "./dependencyContainer";
-import { notFound } from "./middlewares/notFound";
-import { errorHandler } from "./middlewares/errorHandler";
+import productRoutes from "./routes/productRoutes";
+import authRoutes from "./routes/authRoutes";
 
 const app = express();
-const container = createContainer();
 
 app.use(cors());
 app.use(express.json());
 
-app.use("/health", container.healthRoutes);
-app.use("/api/products", container.productRoutes);
+app.get("/", (req, res) => {
+  res.status(200).json({ msg: "SuperStock API funcionando", data: null });
+});
 
-app.use(notFound);
-app.use(errorHandler);
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
+
+app.use((req, res) => {
+  res.status(404).json({ msg: "Ruta no encontrada", data: null });
+});
 
 export default app;

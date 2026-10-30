@@ -1,15 +1,12 @@
 import { Router } from "express";
-import { ProductController } from "../controllers/productController";
-import { asyncHandler } from "../middlewares/asyncHandler";
+import { getAll, getById, create, update, remove } from "../controllers/productController";
 
-export function createProductRoutes(controller: ProductController): Router {
-  const router = Router();
+const router = Router();
 
-  router.get("/", asyncHandler(controller.getAll));
-  router.get("/:id", asyncHandler(controller.getById));
-  router.post("/", asyncHandler(controller.create));
-  router.put("/:id", asyncHandler(controller.update));
-  router.delete("/:id", asyncHandler(controller.remove));
+router.get("/", getAll);
+router.get("/:id", getById);
+router.post("/", create);
+router.put("/:id", update);
+router.delete("/:id", remove);
 
-  return router;
-}
+export default router;
