@@ -1,29 +1,24 @@
-CREATE DATABASE IF NOT EXISTS superstock_db;
+CREATE DATABASE IF NOT EXISTS superstock_db
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
 USE superstock_db;
-
-CREATE TABLE IF NOT EXISTS categories (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100) NOT NULL UNIQUE,
-  description VARCHAR(255)
-);
-
-CREATE TABLE IF NOT EXISTS products (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(150) NOT NULL,
-  description TEXT,
-  price DECIMAL(10,2) NOT NULL,
-  stock INT NOT NULL DEFAULT 0,
-  min_stock INT NOT NULL DEFAULT 0,
-  category_id INT,
-  is_active TINYINT(1) NOT NULL DEFAULT 1,
-  FOREIGN KEY (category_id) REFERENCES categories(id)
-);
 
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   email VARCHAR(150) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL
-);
+) ENGINE=InnoDB;
 
-INSERT IGNORE INTO categories (name) VALUES ('Lácteos'), ('Abarrotes'), ('Limpieza'), ('Frutas');
+CREATE TABLE IF NOT EXISTS products (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  name VARCHAR(150) NOT NULL,
+  description VARCHAR(255) NOT NULL DEFAULT '',
+  price DECIMAL(10,2) NOT NULL,
+  stock INT NOT NULL DEFAULT 0,
+  category VARCHAR(100) NOT NULL,
+  is_active TINYINT(1) NOT NULL DEFAULT 1,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+) ENGINE=InnoDB;

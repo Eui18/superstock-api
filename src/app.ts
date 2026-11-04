@@ -1,22 +1,24 @@
-import express from "express";
-import cors from "cors";
-import productRoutes from "./routes/productRoutes";
+import express, { NextFunction, Request, Response } from "express";
+import { errorHandler } from "./middlewares/errorHandler";
 import authRoutes from "./routes/authRoutes";
+import productRoutes from "./routes/productRoutes";
+import { AppError } from "./utils/appError";
 
 const app = express();
 
-app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.status(200).json({ msg: "SuperStock API funcionando", data: null });
+app.get("/api/health", (req: Request, res: Response) => {
+  res.status(200).json({ status: "ok" });
 });
 
-app.use("/api/auth", authRoutes);
+app.use("/api", authRoutes);
 app.use("/api/products", productRoutes);
 
-app.use((req, res) => {
-  res.status(404).json({ msg: "Ruta no encontrada", data: null });
+app.use((req: Request, res: Response, next: NextFunction) => {
+  next(new AppError(404, "Ruta no encontrada"));
 });
+
+app.use(errorHandler);
 
 export default app;
