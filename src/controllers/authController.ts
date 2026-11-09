@@ -10,11 +10,18 @@ export async function register(req: Request, res: Response, next: NextFunction):
   }
 }
 
-export async function login(req: Request, res: Response, next: NextFunction): Promise<void> {
-  try {
-    const result = await authService.login(req.body ?? {});
-    res.status(200).json(result);
-  } catch (error) {
-    next(error);
-  }
+export async function login(
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> {
+    try {
+        const result = await authService.login(req.body ?? {});
+
+        console.info("[POST /api/login] 200 Inicio de sesión exitoso");
+
+        res.status(200).json(result);
+    } catch (error) {
+        next(error);
+    }
 }

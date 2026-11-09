@@ -12,7 +12,7 @@ async function start(): Promise<void> {
     process.exit(1);
   }
 
-  app.listen(env.port, () => {
+  app.listen(env.port, "0.0.0.0", () => {
     console.log("API escuchando en el puerto " + env.port);
   });
 }

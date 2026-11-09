@@ -5,6 +5,7 @@ export interface ProductRequest {
   description: string;
   price: number;
   stock: number;
+  unit: string;
   category: string;
   active: boolean;
 }
@@ -15,6 +16,7 @@ export interface ProductResponse {
   description: string;
   price: number;
   stock: number;
+  unit: string;
   category: string;
   active: boolean;
 }
@@ -26,6 +28,7 @@ export function toProductResponse(product: Product): ProductResponse {
     description: product.description,
     price: product.price,
     stock: product.stock,
+    unit: product.unit,
     category: product.category,
     active: product.active,
   };

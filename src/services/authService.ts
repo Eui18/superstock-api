@@ -1,9 +1,11 @@
 import bcrypt from "bcryptjs";
 import { AuthResponse, toUserResponse } from "../dtos/authDto";
-import * as userRepository from "../repositories/userRepository";
+import { UserRepository } from "../repositories/userRepository";
+import { UserRepositoryImpl } from "../repositories/userRepositoryImpl";
 import { AppError } from "../utils/appError";
 import { generateToken } from "../utils/token";
 
+const userRepository: UserRepository = new UserRepositoryImpl();
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_PASSWORD_LENGTH = 8;
 const MAX_PASSWORD_BYTES = 72;

@@ -1,8 +1,11 @@
 import { ProductRequest } from "../dtos/productDto";
 import { Product } from "../models/product";
-import * as productRepository from "../repositories/productRepository";
+import { ProductRepository } from "../repositories/productRepository";
+import { ProductRepositoryImpl } from "../repositories/productRepositoryImpl";
 import { AppError } from "../utils/appError";
+import { PRODUCT_CATEGORIES, PRODUCT_UNITS } from "../models/productOptions";
 
+const productRepository: ProductRepository = new ProductRepositoryImpl();
 const MAX_PRICE = 99999999.99;
 const MAX_INT = 2147483647;
 
@@ -31,9 +34,17 @@ function readDescription(value: unknown): string {
   return text;
 }
 
+function readOption(value: unknown, allowed: readonly string[], message: string): string {
+  if (typeof value !== "string" || !allowed.includes(value)) {
+    throw new AppError(400, message);
+  }
+  return value;
+}
+
 function validateProduct(body: Record<string, unknown>): ProductRequest {
   const name = readText(body.name, "el nombre", 150);
-  const category = readText(body.category, "la categoría", 100);
+  const category = readOption(body.category, PRODUCT_CATEGORIES, "La categoría no es válida");
+  const unit = readOption(body.unit, PRODUCT_UNITS, "La unidad de medida no es válida");
   const description = readDescription(body.description);
 
   const price = body.price;
@@ -51,7 +62,7 @@ function validateProduct(body: Record<string, unknown>): ProductRequest {
     throw new AppError(400, "El campo active debe ser true o false");
   }
 
-  return { name, description, price, stock, category, active };
+    return { name, description, price, stock, unit, category, active };
 }
 
 function assertValidId(id: number): void {
